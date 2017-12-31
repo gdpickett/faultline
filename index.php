@@ -4,8 +4,11 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="follow">
         <title>Faultline</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/2.xx.x/css/uikit.min.css" />
+        
+        <base href="/">
     </head>
     
     
@@ -29,6 +32,9 @@
                         </div>                    
                     </div>
                     
+                    <div class="uk-margin">
+                        <button class="uk-input" id="uk-button uk-button-default" type="submit">Login</button>
+                    </div>
                 </form>           
             </div>
         </div>
