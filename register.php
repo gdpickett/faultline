@@ -21,10 +21,10 @@
         
         <div class="uk-section uk-container">
             <div class="uk-grid uk-child-width-1-3@s uk-child.width-1-1" uk-grid>
-                <form class="uk-form-stacked js-login">
-                
-                    <h2>Register</h2>
+                <form class="uk-form-stacked js-register">
                     
+                    <h2>Register</h2>
+                
                     <div class="uk-margin">
                         <label class="uk-form-label" for="form-stacked-text">Email</label>
                         <div class="uk-form-controls">
@@ -40,7 +40,7 @@
                     </div>
                     
                     <div class="uk-margin">
-                        <button class="uk-input" id="uk-button uk-button-default" type="submit">Login</button>
+                        <button class="uk-input" id="uk-button uk-button-default" type="submit">Register</button>
                     </div>
                 </form>           
             </div>
