@@ -1,7 +1,5 @@
-console.log('Loaded main.js data: dataObj,ok');
-
 $(document)
-.on("submit", "form.js-register", function(event) {
+.on("submit", "form.js-login", function(event) {
     event.preventDefault();
     
     var _form = $(this);
@@ -28,7 +26,7 @@ $(document)
     
     $.ajax({
         type: 'POST',
-        url: '/faultline/ajax/register.php',
+        url: '/faultline/ajax/login.php',
         data: dataObj,
         dataType: 'text',        
         async: true,
