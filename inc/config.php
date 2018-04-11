@@ -8,8 +8,8 @@
     ini_set('display_errors', 'On');
 
 
-    include_once "/classes/DB.php";
-    include_once "/classes/filter.php";
+    include_once $_SERVER['DOCUMENT_ROOT']."/faultline/classes/DB.php";
+    include_once $_SERVER['DOCUMENT_ROOT']."/faultline/classes/filter.php";
 
     $con = DB::getConnection();
 ?>

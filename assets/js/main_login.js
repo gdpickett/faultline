@@ -14,11 +14,13 @@ $(document)
         _error
             .text("Please enter a valid email")
             .show();
+            console.log("Invalid email");
         return false;
     }else if (dataObj.password.length < 8) {
         _error
             .text("Password must be 8 or more characters")
             .show();
+            console.log("Invalid Password");
         return false;
     }
      console.log(dataObj+' dataObj');
@@ -28,33 +30,36 @@ $(document)
         type: 'POST',
         url: '/faultline/ajax/login.php',
         data: dataObj,
-        dataType: 'text',        
+        dataType: 'html',        
         async: true,
-        
-        success: function( data, textStatus, jQxhr ){
-            console.log("In there");            
-        },
-        error: function( jqXhr, textStatus, errorThrown ){
-            
-          console.log(errorThrown);
-       }
+        //statusCode: {
+            //403:function() {
+              //  alert('Not alliwed');
+            //}
+        //}
     })
     
     .done(function ajaxDone(data) {
-        console.log(data);
+        var json = JSON.parse(data);
+        data = json;
+        //console.log('Begin Ajax done'+data);
         if(data.redirect !== undefined){
             window.location = data.redirect;
             console.log('Redirecting');
         }else if(data.error !== undefined) {
             _error
-                .text(data.error)
+            //console.log(data.error);
+                .html(data.error);
                 .show();
             console.log('Failing Redirect');
         }
-        alert(data.name);
+        err = data.error;
+        red = data.redirect;
+        console.log('What happened? '+err+' '+red);
+        //alert(data.name);
     })
     .fail(function ajaxFailed(e){
-        console.log(e);
+        console.log('Ajax failed '+e);
     })
     .always(function ajaxAlwaysDoThis(data){
         console.log('Always');

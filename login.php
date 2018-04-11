@@ -1,7 +1,7 @@
 <?php 
 
     define("__CONFIG__", true);
-    require_once "inc/config.php";
+    require_once "inc/config2.php";
         
 ?>
 
@@ -51,7 +51,7 @@
         </div>
         
         
-        <?php require_once "inc/footer.php"; ?>
+        <?php require_once "inc/footer_log.php"; ?>
         
 
     </body>

@@ -1,22 +1,17 @@
 <?php
     define("__CONFIG__", true);
-    require_once "../inc/config2.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/faultline/inc/config.php";
 
-    function console_log( $data ) {
-    $output = $data;
-    if ( is_array( $output ) )
-        $output = implode( ',', $output);
-
-        echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
-    }
-
-   // if($_SERVER['REQUEST_METHOD'] == 'POST' or 1==1) {
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    //if($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Content-Type: application/json');
         $return = [];
-        
+       
+        //echo "Inside server request";
+       
         if (isset($_POST['email']))
         {
+            //echo "post email isset";
             $email = Filter::String( $_POST['email'] );
             
             $str = strtolower($email);
@@ -28,11 +23,12 @@
             //console_log($findUser);
             
             if($findUser -> rowCount() == 1) {
-                
+                echo "Account exits no trycatch";
                 $return['error']= "Account exits";
             }else{
             
                 try{
+                    //echo "Inside try catch";
                     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
                     $addUser = $con->prepare("INSERT INTO `member`(email, password) VALUES(LOWER(:email), :password)");
@@ -48,6 +44,7 @@
                     $return['is_logged_in'] = true;
                     
                 }catch(PDOException $err) {
+                    echo "Inside catch/ try failed";
                     $return['$findUser']=$findUser;
                     $return['error']= "Account exits PDO";
                     $return['$err']= $err->getMessage();
@@ -61,6 +58,7 @@
         
         echo json_encode($return, JSON_PRETTY_PRINT); exit;
     }else{
+        echo "Never started ajax register.php";
         $return['error']= "Invalid URL";
         exit('Invalid URL');
     }

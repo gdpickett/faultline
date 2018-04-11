@@ -1,60 +1,49 @@
 <?php
     define("__CONFIG__", true);
-    require_once "../inc/config2.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/faultline/inc/config2.php";
 
-    function console_log( $data ) {
-    $output = $data;
-    if ( is_array( $output ) )
-        $output = implode( ',', $output);
-
-        echo "<script>console.log( 'Debug Objects: " . $output . "' );</script>";
-    }
-
-   // if($_SERVER['REQUEST_METHOD'] == 'POST' or 1==1) {
+    //echo "inside ajax login";
+    //if($_SERVER['REQUEST_METHOD'] == 'POST' or 1==1) {
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Content-Type: application/json');
         $return = [];
         
+        //echo "server request post";
+        
+        $email = Filter::String( $_POST['email'] );
+        $password = $_POST['password'];
+        
         if (isset($_POST['email']))
         {
-            $email = Filter::String( $_POST['email'] );
-            
             $str = strtolower($email);
             
-            $findUser = $con -> prepare("SELECT `id` FROM `member` WHERE `email` = '$str' LIMIT 1");
+            $findUser = $con -> prepare("SELECT `id`,`password` FROM `member` WHERE `email`='$str' LIMIT 1");
             $findUser->bindParam(':email', $email, PDO::PARAM_STR);
             $findUser->execute();
             
-            //console_log($findUser);
             
-            if($findUser -> rowCount() == 1) {
+            if($findUser -> rowCount() !== 0) {
                 
-                $return['error']= "Account exits";
-            }else{
-            
-                try{
-                    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-                    $addUser = $con->prepare("INSERT INTO `member`(email, password) VALUES(LOWER(:email), :password)");
-                    $addUser->bindParam(':email', $email, PDO::PARAM_STR);
-                    $addUser->bindParam(':password', $password, PDO::PARAM_STR);
-                    $addUser->execute();
-
-                    $id = $con->lastInsertId();
-                    ///IDS BEING USED
-                    $_SESSION['id'] = (int) $id;
-
-                    $return['redirect'] = '/faultline/dashboard.php?message=welcome';
-                    $return['is_logged_in'] = true;
+                //$return['error']= "Account exits";
+                //$return['is_logged_im'] = false;
+                $user = $findUser -> fetch(PDO::FETCH_ASSOC);
+                $id = (int) $user['id'];
+                $hash = (string) $user['password'];
+                
+                if(password_verify($password, $hash)){
+                    //Signed In
+                    $return['redirect']="/faultline/dashboard.php?message=welcome";
                     
-                }catch(PDOException $err) {
-                    $return['$findUser']=$findUser;
-                    $return['error']= "Account exits PDO";
-                    $return['$err']= $err->getMessage();
-
+                    $_SESSION['id']= $id;
+                }else{
+                    //Invalid
+                    $return['error']="Invalid email/password combo";
                 }
+                
+            }else{
+                $return['error']="You do not have an account. <a href='/faultline/register.php'>Create one now?</a>";
             }
-        
+                        
             
         }
         $return['name'] = "I'm Don P";

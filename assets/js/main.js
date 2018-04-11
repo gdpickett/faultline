@@ -30,7 +30,7 @@ $(document)
         type: 'POST',
         url: '/faultline/ajax/register.php',
         data: dataObj,
-        dataType: 'text',        
+        dataType: 'json',        
         async: true,
         
         success: function( data, textStatus, jQxhr ){
@@ -43,23 +43,26 @@ $(document)
     })
     
     .done(function ajaxDone(data) {
-        console.log(data);
+        //console.log(data);
+        var json = JSON.parse(data);
+        data = json;
         if(data.redirect !== undefined){
             window.location = data.redirect;
             console.log('Redirecting');
         }else if(data.error !== undefined) {
             _error
-                .text(data.error)
+                .html(data.error)
                 .show();
             console.log('Failing Redirect');
         }
-        alert(data.name);
+        alert(data.redirect);
+        console.log("Ajax is done?"+data.redirect+data.error);
     })
     .fail(function ajaxFailed(e){
-        console.log(e);
+        console.log(e+" ajaxFailed");
     })
     .always(function ajaxAlwaysDoThis(data){
-        console.log('Always');
+        console.log('Always'+data);
     })
     
     alert('form submitted');
